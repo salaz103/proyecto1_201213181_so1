@@ -6,13 +6,15 @@
 #include<linux/init.h>
 #include<linux/kernel.h>
 #include<linux/fs.h>
+#include<linux/sched.h>
+#include<linux/sched/signal.h>
 #include<sys/sysinfo.h>
 
 #define BUFSIZE 150;
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Luis Salazar");
-MODULE_DESCRIPTION("Modulo de memoria");
+MODULE_DESCRIPTION("Modulo de CPU");
 MODULE_VERSION("0.01");
 
 struct sysinfo inf;
@@ -39,15 +41,15 @@ static struct file_operations operaciones =
 
 
 static int inicio(void){
-    proc_create("memo_201213181",0,NULL,&operaciones);
-    printk(KERN_INFO "%s","CARGANDO MODULO - 201213181 \n");
+    proc_create("cpu_201213181",0,NULL,&operaciones);
+    printk(KERN_INFO "%s","CARGANDO MODULO - Luis Salazar \n");
 
     return 0;
 }
 
 void salir (void){
-    remove_proc_entry("memo_201213181",NULL);
-    printk(KERN_INFO "%s","QUITANDO MODULO - Sistemas Operativos 1\n");
+    remove_proc_entry("cpu_201213181",NULL);
+    printk(KERN_INFO "%s","QUITANDO MODULO - Diciembre 2020 \n");
 }
 
 module_init(inicio);
