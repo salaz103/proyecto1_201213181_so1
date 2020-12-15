@@ -1,0 +1,16 @@
+{
+    "presets": [
+        "env",
+        "react"
+    ],
+    "plugins":[
+        //ESTE PLUGIN PERMITE TRANSFORMAR LA SINTAXIS DE LAS PROPIEDADES DE LAS CLASES
+        //POR EJEMPLO YA NO HAY NECESIDAD DE HACER "BIND" CADA VEZ QUE SE 
+        //HACIA UN NUEVO METODO O UTILIZAR UN CONSTRUCTOR EN CADA CLASE
+        "transform-class-properties",
+        //ESTE PLUGIN PERMITE QUE SE UTILICE EL OPERADOR DE EXPANSION "..." PARA LOS OBJETOS
+        //POR EJEMPLO PARA LOS ARREGLOS ERA: [...]
+        //PERO PARA LOS OBJETOS ES {...}
+        "transform-object-rest-spread"
+    ]
+}
