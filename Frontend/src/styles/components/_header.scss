@@ -17,6 +17,11 @@
     font-weight: 500;
     margin: 0;
   }
+
+  .header__subtitle2 {
+    color: $off-white;
+    font-size: $l-size;
+  }
   
   @media (min-width: $desktop-breakpoint) {
     .header {

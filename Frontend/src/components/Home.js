@@ -1,54 +1,23 @@
 import React from 'react';
-import { Line } from "react-chartjs-2";
-import {connect, sendMsg} from "../connection/api";
 
 class Home extends React.Component {
   state = {
-    valorEditor1: " ",
-    codigoDesanidado: "",
-    valorEditor3D: " ",
-    textot: '',
-    encabezado: '',
-    codigo3d: '',
-    codigooptimizado:'',
-    data: {
-      labels: ["60", "50", "40", "30", "20", "10", "0"],
-      datasets: [
-        {
-          label: "My First dataset",
-          // fill: false,
-          // lineTension: 0.1,
-          // backgroundColor: "rgba(75,192,192,0.4)",
-          // borderColor: "rgba(75,192,192,1)",
-          // borderCapStyle: "butt",
-          // borderDash: [],
-          // borderDashOffset: 0.0,
-          // borderJoinStyle: "miter",
-          // pointBorderColor: "rgba(75,192,192,1)",
-          // pointBackgroundColor: "#fff",
-          // pointBorderWidth: 1,
-          // pointHoverRadius: 5,
-          // pointHoverBackgroundColor: "rgba(75,192,192,1)",
-          // pointHoverBorderColor: "rgba(220,220,220,1)",
-          // pointHoverBorderWidth: 2,
-          // pointRadius: 1,
-          // pointHitRadius: 10,
-          data: [26, 30, 40, 55, 60, 45]
-        }
-      ]
-    }
+    data: []
   };
 
-  componentDidMount(){
-    connect((msg) => {
+  componentDidMount() {
+    /*connect((msg) => {
       console.log("New Message from Server: ");
-      console.log(msg);
-      /*this.setState(prevState => ({
-        chatHistory: [...this.state.chatHistory, msg.data]
+      let inforam = JSON.parse(msg.data);
+      console.log(inforam.MUso);
+      //console.log("STATE: ");
+
+      this.setState(prevState => ({
+        data: [...prevState.data,{name:0,ram:inforam.MUso}]
       }))
       console.log("STATE");
-      console.log(this.state);*/
-    });
+      console.log(this.state);
+    });*/
   }
 
 
@@ -56,10 +25,8 @@ class Home extends React.Component {
 
     return (
       <div className="container">
-        
-        <h2>Line Example</h2>
-        <Line ref="chart" data={this.state.data} />
 
+        <h2>Procesos</h2>
       </div>
     );
   }
