@@ -8,6 +8,7 @@ const Header = (props) => (
       {props.subtitle && <h2 className="header__subtitle">{props.subtitle}</h2>}
       <button><NavLink to="/" activeClassName="is-active" exact={true}>Home</NavLink></button>
       <button><NavLink to="/ram" activeClassName="is-active" >Monitor Ram</NavLink></button>
+      <button><NavLink to="/cpu" activeClassName="is-active" >Monitor CPU</NavLink></button>
   </div>
   
 );
