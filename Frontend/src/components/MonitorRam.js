@@ -9,7 +9,8 @@ class MonitorRam extends React.Component {
     data: [],
     totalram:0,
     totalramconsumida:0,
-    porcentajeconsumo:0
+    porcentajeconsumo:0,
+    cantidad:0
   };
 
   componentDidMount() {
@@ -18,15 +19,34 @@ class MonitorRam extends React.Component {
       let inforam = JSON.parse(msg.data);
       console.log(inforam.MUso);
       //console.log("STATE: ");
+      
+      if(this.state.cantidad<10){
+        this.setState(prevState => ({
+          data: [...prevState.data,{name:0,ram:inforam.MUso}],
+          totalram: inforam.MTotal,
+          totalramconsumida: inforam.MUso,
+          porcentajeconsumo: inforam.MPUso,
+          cantidad: prevState.cantidad+1
+        }))
+      }else{
+        let nuevo= this.state.data.slice(1,this.state.data.length);
+        nuevo.push({name:0,ram:inforam.MUso});
+        this.setState(prevState => ({
+          data: nuevo,
+          totalram: inforam.MTotal,
+          totalramconsumida: inforam.MUso,
+          porcentajeconsumo: inforam.MPUso,
+        }))
+      }
 
-      this.setState(prevState => ({
+      /*this.setState(prevState => ({
         data: [...prevState.data,{name:0,ram:inforam.MUso}],
         totalram: inforam.MTotal,
         totalramconsumida: inforam.MUso,
         porcentajeconsumo: inforam.MPUso
       }))
       console.log("STATE");
-      console.log(this.state);
+      console.log(this.state);*/
     });
   }
 

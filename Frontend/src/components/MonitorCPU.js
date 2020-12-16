@@ -8,7 +8,8 @@ import { connect_cpu, sendMsg } from "../connection/api";
 class MonitorCPU extends React.Component {
   state = {
     data: [],
-    porcentajeUtilizacion:0
+    porcentajeUtilizacion:0,
+    cantidad:0
   };
 
   componentDidMount() {
@@ -19,10 +20,22 @@ class MonitorCPU extends React.Component {
       let porcentaje= (infoCPU.CPU_1+infoCPU.CPU_2+infoCPU.CPU_3+infoCPU.CPU_4)/(4);
       //console.log("STATE: ");
 
-      this.setState(prevState => ({
-        data: [...prevState.data, { name: 0, cpu1: infoCPU.CPU_1, cpu2: infoCPU.CPU_2, cpu3: infoCPU.CPU_3, cpu4: infoCPU.CPU_4 }],
-        porcentajeUtilizacion: porcentaje
-      }))
+      if(this.state.cantidad<10){
+        this.setState(prevState => ({
+          data: [...prevState.data, { name: 0, cpu1: infoCPU.CPU_1, cpu2: infoCPU.CPU_2, cpu3: infoCPU.CPU_3, cpu4: infoCPU.CPU_4 }],
+          porcentajeUtilizacion: porcentaje,
+          cantidad: prevState.cantidad+1
+        }))
+      }else{
+        let nuevo= this.state.data.slice(1,this.state.data.length);
+        nuevo.push({ name: 0, cpu1: infoCPU.CPU_1, cpu2: infoCPU.CPU_2, cpu3: infoCPU.CPU_3, cpu4: infoCPU.CPU_4 })
+        this.setState(prevState => ({
+          data: nuevo,
+          porcentajeUtilizacion: porcentaje
+        }))
+      }
+
+      
       /*console.log("STATE");
       console.log(this.state);*/
     });
@@ -50,8 +63,8 @@ class MonitorCPU extends React.Component {
           </LineChart>
 
           <div>
-            <h2>Porcentaje de CPU utilizado</h2><br></br>
-            <h3>{this.state.porcentajeUtilizacion}%</h3><br></br>
+            <h2>Porcentaje promedio de CPU utilizado</h2><br></br>
+            <h3>{Math.floor(this.state.porcentajeUtilizacion)}%</h3><br></br>
           </div>
 
         </div>
