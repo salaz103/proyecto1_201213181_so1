@@ -8,6 +8,7 @@ import { connect_cpu, sendMsg } from "../connection/api";
 class MonitorCPU extends React.Component {
   state = {
     data: [],
+    porcentajeUtilizacion:0
   };
 
   componentDidMount() {
@@ -15,11 +16,12 @@ class MonitorCPU extends React.Component {
       console.log("New Message from Server, CPU: ");
       let infoCPU = JSON.parse(msg.data);
       console.log(infoCPU);
+      let porcentaje= (infoCPU.CPU_1+infoCPU.CPU_2+infoCPU.CPU_3+infoCPU.CPU_4)/(4);
       //console.log("STATE: ");
 
       this.setState(prevState => ({
         data: [...prevState.data, { name: 0, cpu1: infoCPU.CPU_1, cpu2: infoCPU.CPU_2, cpu3: infoCPU.CPU_3, cpu4: infoCPU.CPU_4 }],
-        //porcentajeconsumo: inforam.MPUso
+        porcentajeUtilizacion: porcentaje
       }))
       /*console.log("STATE");
       console.log(this.state);*/
@@ -49,7 +51,7 @@ class MonitorCPU extends React.Component {
 
           <div>
             <h2>Porcentaje de CPU utilizado</h2><br></br>
-            <h3>{this.state.porcentajeCPU}%</h3><br></br>
+            <h3>{this.state.porcentajeUtilizacion}%</h3><br></br>
           </div>
 
         </div>
