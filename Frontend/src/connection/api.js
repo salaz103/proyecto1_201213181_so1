@@ -1,5 +1,6 @@
 var socket = new WebSocket("ws://localhost:8081/prueba");
 var socket_cpu= new WebSocket("ws://localhost:8081/cpu"); 
+var socket_procesos= new WebSocket("ws://localhost:8081/procesos"); 
 
 
 let connect = (cb) => {
@@ -44,10 +45,31 @@ let connect_cpu = (cb) => {
     };
 };
 
+let connect_procesos = (cb) => {
+    console.log("Attempting Connection for PROCESOS...");
+
+    socket_procesos.onopen = () => {
+        console.log("Successfully Connected for PROCESOS");
+    };
+
+    socket_procesos.onmessage = msg => {
+        //console.log(msg);
+        cb(msg);
+    };
+
+    socket_procesos.onclose = event => {
+        console.log("Socket Closed Connection for PROCESOS: ", event);
+    };
+
+    socket_procesos.onerror = error => {
+        console.log("Socket Error in PROCESOS: ", error);
+    };
+};
+
 
 let sendMsg = msg => {
     console.log("sending msg: ", msg);
-    socket.send(msg);
+    socket_procesos.send(msg);
 };
 
-export { connect, sendMsg, connect_cpu };
+export { connect, sendMsg, connect_cpu,connect_procesos };

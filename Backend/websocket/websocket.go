@@ -11,6 +11,32 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 )
 
+type tasks struct {
+	Procesos    []proceso `json:"procesos"`
+	Ejecucion   int       `json:"ejecucion"`
+	Suspendidos int       `json:"suspendidos"`
+	Detenidos   int       `json:"detenidos"`
+	Zombies     int       `json:"zombies"`
+	Otros       int       `json:"otros"`
+	Total       int       `json:"total"`
+}
+
+type proceso struct {
+	PID     int    `json:"PID"`
+	Nombre  string `json:"Nombre"`
+	Usuario int    `json:"Usuario"`
+	Estado  string `json:"Estado"`
+	Memoria int    `json:"Memoria"`
+	Hijos   []hijo `json:"hijos"`
+}
+
+type hijo struct {
+	ProcesoPadre int    `json:"Proceso padre"`
+	PID          int    `json:"PID"`
+	Nombre       string `json:"Nombre"`
+	Estado       int    `json:"Estado"`
+}
+
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -27,6 +53,39 @@ func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error) {
 
 	return ws, nil
 
+}
+
+func transformar() string {
+
+	//h := &tasks{}
+	info, err := ioutil.ReadFile("/proc/cpu_201213181")
+	if err != nil {
+		fmt.Println("Error al abrir archivo cpu_201213181")
+		return ""
+	}
+
+	//lectura := string(info)
+	//fmt.Println(lectura)
+
+	/*err2 := json.Unmarshal([]byte(lectura), &h)
+	if err2 != nil {
+		fmt.Println(err2)
+
+		log.Printf("error decoding sakura response: %v", err2)
+		if e, ok := err2.(*json.SyntaxError); ok {
+			log.Printf("syntax error at byte offset %d", e.Offset)
+		}
+	}*/
+
+	/*for _, d := range h.Procesos {
+		//do something with the d
+
+		mutable := reflect.ValueOf(&d).Elem()
+		mutable.FieldByName("Usuario").SetInt(1500)
+		fmt.Println(d.Usuario)
+	}*/
+	//fmt.Printf("%+v\n", h)
+	return string(info)
 }
 
 func informacionRAM() string {
@@ -79,5 +138,15 @@ func EnvioCPU(conn *websocket.Conn) {
 				return
 			}
 		}
+	}
+}
+
+func EnvioProcesos(conn *websocket.Conn) {
+
+	fmt.Printf("Updating information PROCESSES")
+
+	if err := conn.WriteMessage(websocket.TextMessage, []byte(transformar())); err != nil {
+		fmt.Println(err)
+		return
 	}
 }
