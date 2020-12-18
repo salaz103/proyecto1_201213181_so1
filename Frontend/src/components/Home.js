@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect_procesos, sendMsg } from "../connection/api";
+import { connect_procesos, sendMsg, connect_mensaje } from "../connection/api";
 import Tree from 'react-animated-tree'
 import Table from 'react-bootstrap/Table'
 
@@ -25,7 +25,8 @@ class Home extends React.Component {
     detenidos: 0,
     zombie: 0,
     otros: 0,
-    total: 0
+    total: 0,
+    proceso_id: 0
   };
 
   componentDidMount() {
@@ -47,10 +48,21 @@ class Home extends React.Component {
       console.log("STATE");
       console.log(this.state);
     });
+
+    connect_mensaje();
+  }
+
+  onIdChange = (e) => {
+    const proceso_id = e.target.value;
+    this.setState(() => ({ proceso_id }));
   }
 
 
-
+  send=(e)=> {
+    e.preventDefault();
+    console.log("Sending message...");
+    sendMsg(this.state.proceso_id);
+  }
 
   render() {
 
@@ -58,8 +70,37 @@ class Home extends React.Component {
       <div className="container">
 
         <h2 className="header__subtitle2">Listado de Procesos en Servidor</h2>
+        <form onSubmit={this.send}>
+          <input
+            type="number"
+            placeholder="ID PROCESO"
+            value={this.state.proceso_id}
+            onChange={this.onIdChange}
+          />
+          <button>Kill por ID</button>
+        </form>
 
         <div className="container-inline2">
+
+          <div>
+            <h2>Procesos en ejecución</h2>
+            <h3>{this.state.ejecucion}</h3><br></br>
+
+            <h2>Procesos suspendidos</h2>
+            <h3>{this.state.suspendidos}</h3><br></br>
+
+            <h2>Procesos detenidos</h2>
+            <h3>{this.state.detenidos}</h3><br></br>
+
+            <h2>Procesos zombie</h2>
+            <h3>{this.state.zombie}</h3><br></br>
+
+            <h2>Otros procesos</h2>
+            <h3>{this.state.otros}</h3><br></br>
+
+            <h2>Total de procesos</h2>
+            <h3>{this.state.total}</h3><br></br>
+          </div>
 
           <div>
             <h2>Arból de Procesos</h2>
@@ -77,7 +118,7 @@ class Home extends React.Component {
           </div>
 
           <div >
-          <h2>Tabla de procesos</h2>
+            <h2>Tabla de procesos</h2>
             <table >
               <thead>
                 <tr>
@@ -95,7 +136,7 @@ class Home extends React.Component {
                       <tr key={i}>
                         <td >{x.PID}</td>
                         <td >{x.Nombre}</td>
-                        <td >{x.Usuario==0?"root":x.Usuario==1000?"luis":x.Usuario}</td>
+                        <td >{x.Usuario == 0 ? "root" : x.Usuario == 1000 ? "luis" : x.Usuario}</td>
                         <td >{x.Estado}</td>
                         <td >{x.Memoria ? (x.Memoria / 5743) : 0}</td>
                       </tr>
