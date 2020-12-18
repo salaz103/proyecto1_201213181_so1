@@ -57,11 +57,12 @@ class Home extends React.Component {
     return (
       <div className="container">
 
-        <h2>Procesos</h2>
+        <h2 className="header__subtitle2">Listado de Procesos en Servidor</h2>
 
         <div className="container-inline2">
 
           <div>
+            <h2>Arból de Procesos</h2>
             <Tree content="Procesos" type="ITEM" canHide open style={treeStyles}>
               {
                 this.state.procesos.map((x, i) => {
@@ -76,7 +77,7 @@ class Home extends React.Component {
           </div>
 
           <div >
-
+          <h2>Tabla de procesos</h2>
             <table >
               <thead>
                 <tr>
@@ -94,7 +95,7 @@ class Home extends React.Component {
                       <tr key={i}>
                         <td >{x.PID}</td>
                         <td >{x.Nombre}</td>
-                        <td >{x.Usuario}</td>
+                        <td >{x.Usuario==0?"root":x.Usuario==1000?"luis":x.Usuario}</td>
                         <td >{x.Estado}</td>
                         <td >{x.Memoria ? (x.Memoria / 5743) : 0}</td>
                       </tr>
